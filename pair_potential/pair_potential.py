@@ -1,27 +1,13 @@
 from itertools import combinations
 from math import sqrt
 
+import numpy as np
 
-def pair_potential(x, potential=None, args=()):
+
+def slow_pair_potential(x, potential=None, args=()):
     """
 
     Calculates the potential energy of configuration of particles.
-
-    >>> from lj_potential import lennard_jones_potential as lj
-
-    >>> pair_potential(x=[[0.0,0.0,0.0]], potential=lj)
-    0.0
-
-    >>> pair_potential(x=[[0.0,0.0,0.0],[0.0,0.0,1.0]], potential=None)
-    0.0
-
-    >>> pair_potential(x=[[0.0,0.0,0.0],[0.0,0.0,1.0]], potential=lj)
-    0.0
-
-    >>> pair_potential(x=[[0.0,0.0],[0.0,1.0],[0.0,2.0]],
-    ... potential=lj,
-    ... args=(1.0, 1.0)) # 2D configuration
-    -0.0615234375
 
     :param x: positions of the particles
     :type x: list of lists
@@ -39,11 +25,66 @@ def pair_potential(x, potential=None, args=()):
 
     energy = 0.0
 
-    for x1, x2 in combinations(x, 2):  # for statement
+    for x1, x2 in combinations(x, 2):
         r_squared = 0.0
-        for c1, c2 in zip(x1, x2):  # for statement
+        for c1, c2 in zip(x1, x2):
             r_squared += (c1 - c2) * (c1 - c2)
-        r = sqrt(r_squared)  # sqrt imported from math module
+        r = sqrt(r_squared)
         energy += potential(r, *args)
+
+    return energy
+
+
+def faster_pair_potential(x, potential=None, args=()):
+    """
+
+    Calculates the potential energy of configuration of particles.
+
+    :param x: positions of the particles
+    :type x: list of lists
+    :param potential: the pairwise potential function.
+                      must be of the form f(x, *args).
+    :type potential: callable
+    :param args: arguments to pass to the function
+
+    :return: energy of the configuration
+    :rtype: float
+    """
+
+    if potential is None:
+        return 0.0
+
+    energy = 0.0
+
+    for x1, x2 in combinations(x, 2):
+        r = np.linalg.norm(x1 - x2)
+        energy += potential(r, *args)
+
+    return energy
+
+
+def fast_pair_potential(x, potential=None, args=()):
+    """
+
+    Calculates the potential energy of configuration of n particles in d dimensions.
+
+    :param x: positions of the particles
+    :type x: numpy ndarray, shape n x d
+    :param potential: the pairwise potential function.
+                      must be of the form f(x, *args).
+    :type potential: callable
+    :param args: arguments to pass to the function
+
+    :return: energy of the configuration
+    :rtype: float
+    """
+
+    if potential is None:
+        return 0.0
+
+    n, _ = x.shape
+    left, right = np.triu_indices(n, 1)
+    r = np.linalg.norm(x[left] - x[right], axis=1)
+    energy = np.sum(potential(r, *args))
 
     return energy

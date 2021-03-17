@@ -1,6 +1,6 @@
 # the perimeters of hexagons circumscribed and inscribed about a circle with radius 0.5
 HEXAGON_INNER = 3  # don't forget to set the perimeters
-HEXAGON_OUTER = 12**0.5  #
+HEXAGON_OUTER = 12 ** 0.5  #
 
 
 def archimedes_formula(precision):
@@ -22,5 +22,5 @@ def archimedes_formula(precision):
     while p_outer - p_inner > precision:
         number_sides *= 2
         p_outer_2 = 2 * p_inner * p_outer / (p_inner + p_outer)
-        p_inner, p_outer = (p_inner*p_outer_2)**0.5, p_outer_2
+        p_inner, p_outer = (p_inner * p_outer_2) ** 0.5, p_outer_2
     return number_sides, p_outer

@@ -3,7 +3,7 @@ def square(x):
 
 
 def cube(x):
-    return x*x*x
+    return x * x * x
 
 
 def power(x, n=1):
