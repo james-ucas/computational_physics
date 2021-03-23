@@ -1,5 +1,6 @@
-import numpy as np
 from time import time
+
+import numpy as np
 
 
 def make_random_configuration(atoms):
@@ -28,6 +29,8 @@ def main():
                         for (ppf, pf) in arguments
                         for x in configurations],
                        dtype=float).reshape(3, -1)
+    fmt = 'timings for {:n} particles:\nslow\t{:.2f} s\nfaster\t{:.2f} s\nfast\t{:.2f} s'
+    print(fmt.format(atom_counts[-1], *timings[:, -1]))
 
     fig, ax = plt.subplots(1, 1)
     for label, timing in zip(labels, timings):
@@ -37,7 +40,7 @@ def main():
     ax.set_ylabel('run time/ s')
     ax.set_xscale('log')
     ax.set_yscale('log')
-    plt.show()
+    plt.savefig('figures/pair_potential_timings.pdf')
 
 
 if __name__ == '__main__':
