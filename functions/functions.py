@@ -29,5 +29,9 @@ def xexpx_derivative(x):
     return (x + 1) * exp(x)
 
 
-def xexpx_integral(x):
+def xexpx_indefinite_integral(x):
     return (x - 1) * exp(x)
+
+
+def xexpx_integral(a, b):
+    return xexpx_indefinite_integral(b) - xexpx_indefinite_integral(a)

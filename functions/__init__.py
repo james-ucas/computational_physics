@@ -1,1 +1,1 @@
-from .functions import xexpx, xexpx_derivative, xexpx_integral, polynomial_generator
+from .functions import xexpx, xexpx_derivative, xexpx_integral, xexpx_indefinite_integral, polynomial_generator

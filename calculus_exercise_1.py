@@ -1,6 +1,7 @@
 import numpy as np
 
-from calculus.difference import first_forward_difference, first_central_difference, first_backward_difference
+from calculus.difference import first_forward_difference, first_central_difference, first_backward_difference, \
+    five_point_formula
 from functions import xexpx, xexpx_derivative
 
 
@@ -12,15 +13,17 @@ def main():
     fig, ax = plt.subplots(1, 1, figsize=plt.figaspect(1 / 2), tight_layout=True)
 
     x = 2.0
-    h = np.logspace(-10, 0, 100)
+    h = np.logspace(0, -53, 100, base=2)
     h_error = abs(1.0 - ((x + h) - x) / h)
+    func = xexpx
+    func_der = xexpx_derivative
 
-    df = xexpx_derivative(x)
-    approximations = (first_forward_difference, first_backward_difference, first_central_difference)
-    labels = ('first forward difference', 'first backward difference', 'first central difference')
+    df = func_der(x)
+    approximations = (first_forward_difference, first_backward_difference, first_central_difference, five_point_formula)
+    labels = ('first forward difference', 'first backward difference', 'first central difference', 'five point formula')
 
     for approximation, label in zip(approximations, labels):
-        dx_approx = approximation(f=xexpx, x=x, h=h)
+        dx_approx = approximation(f=func, x=x, h=h)
         df_error = abs(df - dx_approx) / abs(df)
         ax.plot(h, df_error, label=label)
     ax.plot(h, h_error, label='error in h')
