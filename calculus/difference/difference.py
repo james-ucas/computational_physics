@@ -10,6 +10,10 @@ def first_central_difference(f, x, h):
     return (f(x + h) - f(x - h)) / 2 / h
 
 
+def second_central_difference(f, x, h):
+    return (f(x + h) - 2 * f(x) + f(x - h)) / h / h
+
+
 def five_point_formula(f, x, h):
     return (f(x - 2 * h) - 8 * f(x - h) + 8 * f(x + h) - f(x + 2 * h)) / 12 / h
 

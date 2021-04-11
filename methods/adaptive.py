@@ -1,4 +1,4 @@
-from calculus.difference import first_central, second_central
+from calculus.difference import first_central_difference, second_central_difference
 
 
 def adaptive_first(f, x, h, tol):
@@ -15,9 +15,9 @@ def adaptive_first(f, x, h, tol):
 
     :return float: derivative
     """
-    h, df0, df1, = h / 2, first_central(f, x, h), first_central(f, x, h / 2)
+    h, df0, df1, = h / 2, first_central_difference(f, x, h), first_central_difference(f, x, h / 2)
     while h * h * abs(df1 - df0) > tol:
-        h, df0, df1 = h / 2, df1, first_central(f, x, h / 2)
+        h, df0, df1 = h / 2, df1, first_central_difference(f, x, h / 2)
     if df1 == df0:
         raise ValueError("floating point underflow occurred; consider increasing the value of tol")
     return (4 * df1 - df0) / 3
@@ -37,9 +37,9 @@ def adaptive_second(f, x, h, tol):
 
     :return float: derivative
     """
-    h, df0, df1, = h / 2, second_central(f, x, h), second_central(f, x, h / 2)
+    h, df0, df1, = h / 2, second_central_difference(f, x, h), second_central_difference(f, x, h / 2)
     while h * h * abs(df1 - df0) > tol:
-        h, df0, df1 = h / 2, df1, second_central(f, x, h / 2)
+        h, df0, df1 = h / 2, df1, second_central_difference(f, x, h / 2)
     if df1 == df0:
         raise ValueError("floating point underflow occurred; consider increasing the value of tol")
     return (4 * df1 - df0) / 3

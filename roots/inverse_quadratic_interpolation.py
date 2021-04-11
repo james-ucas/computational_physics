@@ -21,6 +21,7 @@ def inverse_quadratic_interpolation(f, a, b, tol):
     """
     dx = inf
     c = (a + b) / 2
+    d = nan
     fa, fc, fb = f(a), f(c), f(b)
     while abs(dx) > tol:
         if not fa != fb != fc != fa:
