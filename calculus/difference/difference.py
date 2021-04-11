@@ -11,7 +11,7 @@ def first_central_difference(f, x, h):
 
 
 def five_point_formula(f, x, h):
-    return (f(x-2*h) - 8*f(x-h) + 8*f(x+h) - f(x+2*h))/12/h
+    return (f(x - 2 * h) - 8 * f(x - h) + 8 * f(x + h) - f(x + 2 * h)) / 12 / h
 
 
 def iterative_difference(f, x, h, tol, difference_function=first_central_difference):
@@ -42,7 +42,7 @@ def iterative_difference(f, x, h, tol, difference_function=first_central_differe
 
     while abs(f0 - f1) > tol:
         h /= 2
-        if x+h == x:
+        if x + h == x:
             raise ValueError('desired tolerance cannot be reached due to floating point underflow'
                              f' (current step size: {h})')
         f0, f1 = f1, difference_function(f, x, h)
