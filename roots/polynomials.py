@@ -1,6 +1,10 @@
 from typing import NamedTuple as NamedTuple
 
-Polynomial = NamedTuple('Polynomial', function=callable, derivative=callable, rearranged=callable)
+Polynomial = NamedTuple('Polynomial',
+                        function=callable,
+                        derivative=callable,
+                        second_derivative=callable,
+                        rearranged=callable)
 
 
 def quintic_function(x):
@@ -9,6 +13,10 @@ def quintic_function(x):
 
 def quintic_derivative(x):
     return 5 * x ** 4 - 1
+
+
+def quintic_second_derivative(x):
+    return 20 * x ** 3
 
 
 def quintic_rearranged(x):
@@ -23,6 +31,10 @@ def quartic_derivative(x):
     return 64 * x ** 3 - 8
 
 
+def quartic_second_derivative(x):
+    return 192 * x ** 2
+
+
 def quartic_rearranged(x):
     return (8 * x - 3) ** (1 / 4) / 2
 
@@ -35,10 +47,14 @@ def cubic_derivative(x):
     return 3 * x ** 2 - 4 * x - 11
 
 
+def cubic_second_derivative(x):
+    return 6 * x - 4
+
+
 def cubic_rearranged(x):
     return (2 * x ** 2 + 11 * x - 12) ** (1 / 3)
 
 
-quintic = Polynomial(quintic_function, quintic_derivative, quintic_rearranged)
-quartic = Polynomial(quartic_function, quartic_derivative, quartic_rearranged)
-cubic = Polynomial(cubic_function, cubic_derivative, cubic_rearranged)
+quintic = Polynomial(quintic_function, quintic_derivative, quintic_second_derivative, quintic_rearranged)
+quartic = Polynomial(quartic_function, quartic_derivative, quartic_second_derivative, quartic_rearranged)
+cubic = Polynomial(cubic_function, cubic_derivative, cubic_second_derivative, cubic_rearranged)
