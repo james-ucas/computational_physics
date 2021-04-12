@@ -1,3 +1,7 @@
+import numpy as np
+from itertools import combinations_with_replacement
+
+
 def first_forward_difference(f, x, h):
     return (f(x + h) - f(x)) / h
 
@@ -18,36 +22,57 @@ def five_point_formula(f, x, h):
     return (f(x - 2 * h) - 8 * f(x - h) + 8 * f(x + h) - f(x + 2 * h)) / 12 / h
 
 
-def iterative_difference(f, x, h, tol, difference_function=first_central_difference):
+def first_central_multi(f, x, h):
     """
+    Compute the first central differences approximation
+    to the derivative of f at the point x using step size h.
 
-    Estimate the derivative of f at x using the specified difference function
-    by iteratively reducing the initial step size h until
-    | Delta(h) - Delta(h/2) | < tol .
-
-    If the ratio h/x becomes so small that x+h==x, raise a ValueError reporting
-    floating point underflow.
-
-    :param f: function whose derivative is required
-    :type f: callable, call signature f(x)
-    :param x: point at which the function derivative is required
-    :type x: float
-    :param h: initial step size
-    :type h: float
-    :param tol: desired precision
-    :type tol: float
-    :param difference_function: function to calculate the derivative
-    :type difference_function: callable, call signature g(f, x, h)
-    :return: derivative to required precision, if found
-    :rtype: float
+    :param callable f: function f(x)
+    :param ndarray x: point at which to evaluate the first derivative
+    :param float h: step size
+    :return array: approximate value of the first derivative
     """
-    f0 = difference_function(f, x, h)
-    f1 = 1e10
+    x_flat = x.reshape(-1)
+    x_copy = x.copy()
+    df = np.zeros_like(x)
+    df_flat = df.reshape(-1)
+    for i in range(x.size):
+        x_flat[i] += h
+        df_flat[i] += f(x)
+        x_flat[i] -= 2 * h
+        df_flat[i] -= f(x)
+        x[:] = x_copy[:]
+    df /= 2 * h
+    return df
 
-    while abs(f0 - f1) > tol:
-        h /= 2
-        if x + h == x:
-            raise ValueError('desired tolerance cannot be reached due to floating point underflow'
-                             f' (current step size: {h})')
-        f0, f1 = f1, difference_function(f, x, h)
-    return f1
+
+def second_central_multi(f, x, h):
+    """
+    Compute the first second differences approximation
+    to the derivative of f at the point x using step size h.
+
+    :param callable f: function f(x)
+    :param ndarray x: point at which to evaluate the second derivative
+    :param float h: step size
+    :return array: approximate value of the second derivative
+    """
+    x_flat = x.reshape(-1)
+    x_copy = x.copy()
+    d2f = np.zeros((*x.shape, *x.shape))
+    d2f_flat = d2f.reshape((x.size, x.size))
+    for i, j in combinations_with_replacement(range(x.size), 2):
+        x_flat[i] += h
+        x_flat[j] += h
+        d2f_flat[i, j] += f(x)  # f++
+        x_flat[j] -= 2 * h
+        d2f_flat[i, j] -= f(x)  # f+-
+        x_flat[i] -= 2 * h
+        x_flat[j] += 2 * h
+        d2f_flat[i, j] -= f(x)  # f-+
+        x_flat[j] -= 2 * h
+        d2f_flat[i, j] += f(x)  # f--
+        x[:] = x_copy[:]
+        if i != j:
+            d2f_flat[j, i] = d2f_flat[i, j]
+    d2f /= 4 * h * h
+    return d2f
