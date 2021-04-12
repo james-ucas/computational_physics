@@ -1,7 +1,7 @@
-from figures import plt
 import numpy as np
 
 from calculus.integration import trapezium, simpson
+from plotting import plt
 from functions import polynomial_generator
 from interpolation.lagrange_basis import lagrange_basis_polynomial_factory
 
@@ -95,4 +95,3 @@ def integral():
         ax.set_xticks([-2, 0, 2])
         ax.set_yticks([0, 4])
     plt.show()
-

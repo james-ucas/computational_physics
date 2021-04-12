@@ -14,7 +14,7 @@ def time_to_calculate_energy(pair_potential_function, potential_function, config
 
 
 def main():
-    import matplotlib.pyplot as plt
+    from plotting import plt
     from pair_potential import slow_pair_potential, faster_pair_potential, fast_pair_potential
     from pair_potential.lj_potential import lennard_jones_potential, vectorised_lennard_jones_potential
 
@@ -40,7 +40,7 @@ def main():
     ax.set_ylabel('run time/ s')
     ax.set_xscale('log')
     ax.set_yscale('log')
-    plt.savefig('figures/pair_potential_timings.pdf')
+    plt.savefig('./pair_potential_timings.pdf')
 
 
 if __name__ == '__main__':
