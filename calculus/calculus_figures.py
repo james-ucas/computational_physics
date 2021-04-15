@@ -1,9 +1,9 @@
 import numpy as np
 
 from calculus.integration import trapezium, simpson
-from plotting import plt
 from functions import polynomial_generator
 from interpolation.lagrange_basis import lagrange_basis_polynomial_factory
+from plotting import plt
 
 
 def standard_plot(*args):

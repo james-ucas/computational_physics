@@ -1,8 +1,8 @@
-from plotting import plt
 import numpy as np
 
 from calculus.difference import first_central_difference, second_central_difference
 from methods import richardson
+from plotting import plt
 
 
 def delta1_factory(f, x):

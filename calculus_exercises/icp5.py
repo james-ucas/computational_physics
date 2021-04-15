@@ -1,7 +1,7 @@
-from plotting import plt
 import numpy as np
 
 from methods.adaptive import adaptive_first, adaptive_second
+from plotting import plt
 
 
 def func(x):

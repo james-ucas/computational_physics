@@ -1,5 +1,6 @@
-import numpy as np
 from itertools import combinations_with_replacement
+
+import numpy as np
 
 
 def first_forward_difference(f, x, h):

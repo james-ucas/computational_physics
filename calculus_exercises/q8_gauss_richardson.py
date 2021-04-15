@@ -1,8 +1,8 @@
-from plotting import plt
 import numpy as np
 
 from calculus.integration import gauss_legendre_factory
 from icp3_4 import make_richardson_plot
+from plotting import plt
 
 
 def integrator_factory(f, a, b, n):

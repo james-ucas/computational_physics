@@ -1,7 +1,6 @@
 import numpy as np
 
 from calculus.integration import gauss_legendre_factory, simpson
-
 from icp3_4 import relative_error
 
 
