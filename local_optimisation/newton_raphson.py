@@ -1,5 +1,8 @@
 from math import nan
 
+import numpy as np
+
+from matrices import matrix_inverse
 from roots.newton_raphson import newton_raphson_step
 
 
@@ -32,5 +35,18 @@ def newton_raphson(f, x0, df, d2f, tol, ensure_minimum=False):
         if x1 in values:
             return nan
         values.add(x1)
+        x0 = x1
+    return x1
+
+
+def newton_raphson_step_multi(df, x0, d2f):
+    df0 = df(x0)
+    d2f0i = matrix_inverse(d2f(x0))
+    return x0 - df0 @ d2f0i
+
+
+def newton_raphson_multi(f, x0, df, d2f, tol):
+    step_function = newton_raphson_step_multi
+    while np.linalg.norm((x1 := step_function(df, x0, d2f)) - x0) > tol:
         x0 = x1
     return x1
