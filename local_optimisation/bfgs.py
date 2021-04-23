@@ -15,13 +15,15 @@ def bfgs_update_hessian(binv, y, s):
     :return numpy.ndarray : the approximate inverse Hessian at step i+1
 
     """
-    y, yT = y[:, np.newaxis], y[np.newaxis, :]
-    s, sT = s[:, np.newaxis], s[np.newaxis, :]
-    if (sT @ y) < 0:
-        raise ValueError(f'{sT}, {y}')
+    y, y_t = y[:, np.newaxis], y[np.newaxis, :]
+    s, s_t = s[:, np.newaxis], s[np.newaxis, :]
+    if (s_t @ y) == 0:
+        raise ValueError(f'{s_t}, {y}')
+    elif (s_t @ y) < 0:
+        y *= -1
     return (binv +
-            (sT @ y + yT @ binv @ y) * (s @ sT) / (sT @ y) ** 2 -
-            (binv @ y @ sT + s @ yT @ binv) / (sT @ y))
+            (s_t @ y + y_t @ binv @ y) * (s @ s_t) / (s_t @ y) ** 2 -
+            (binv @ y @ s_t + s @ y_t @ binv) / (s_t @ y))
 
 
 def take_step(f, x0, df0, binv):
@@ -46,9 +48,9 @@ def bfgs(f, x0, df, tol):
 
     x0 = x0.copy()
     df0 = df(x0)
-    binv = np.eye(x0.size)
+    b_inv = np.eye(x0.size)
 
-    while norm((x1 := take_step(f, x0, df0, binv)) - x0) > tol and norm(df1 := df(x1)) > tol:
-        binv = bfgs_update_hessian(binv, df1 - df0, x1 - x0)
+    while norm((x1 := take_step(f, x0, df0, b_inv)) - x0) > tol and norm(df1 := df(x1)) > tol:
+        b_inv = bfgs_update_hessian(b_inv, df1 - df0, x1 - x0)
         x0, df0 = x1, df1
     return x1
