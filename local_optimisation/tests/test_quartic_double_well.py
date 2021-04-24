@@ -3,10 +3,10 @@ import unittest
 import numpy as np
 
 from functions import quartic_double_well, quartic_double_well_derivative, quartic_double_well_second_derivative
-from local_optimisation import newton_raphson_multi, gradient_descent, hybrid_eigenvector_following
+from local_optimisation import newton_raphson_multi, gradient_descent, hybrid_eigenvector_following, bfgs
 
 
-class TestNewtonRaphsonMulti(unittest.TestCase):
+class TestLocalOptimisersQuarticDoubleWell(unittest.TestCase):
     def setUp(self):
         self.x0 = np.array([-0.1, 0.1])
         self.x1 = np.array([-0.5, 0.5])
@@ -33,4 +33,11 @@ class TestNewtonRaphsonMulti(unittest.TestCase):
         x_sty = gradient_descent(f, self.x0, df, tol=1e-8)
         np.testing.assert_allclose(x_sty + 1, self.x_min + 1)
         x_sty = gradient_descent(f, self.x1, df, tol=1e-8)
+        np.testing.assert_allclose(x_sty + 1, self.x_min + 1)
+
+    def test_bfgs_quartic_double_well(self):
+        f, df, d2f = self.functions
+        x_sty = bfgs(f, self.x0, df, xtol=1e-8, gtol=1e-8)
+        np.testing.assert_allclose(x_sty + 1, self.x_min + 1)
+        x_sty = bfgs(f, self.x1, df, xtol=1e-8, gtol=1e-8)
         np.testing.assert_allclose(x_sty + 1, self.x_min + 1)

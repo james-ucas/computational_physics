@@ -6,7 +6,7 @@ from scipy.optimize import rosen, rosen_der, rosen_hess
 from local_optimisation import newton_raphson_multi, gradient_descent, bfgs
 
 
-class TestNewtonRaphsonMulti(unittest.TestCase):
+class TestLocalOptimisersRosenbrock(unittest.TestCase):
     def setUp(self):
         self.x0 = np.array([-1.0, 2.0])
         self.xi = np.array([1.0, 1.0])
@@ -25,5 +25,5 @@ class TestNewtonRaphsonMulti(unittest.TestCase):
 
     def test_bfgs_rosenbrock(self):
         f, df, d2f = self.functions
-        x = bfgs(f, self.x0, df, tol=self.tol)
+        x = bfgs(f, self.x0, df, xtol=self.tol, gtol=self.tol)
         np.testing.assert_allclose(x, self.xi)
