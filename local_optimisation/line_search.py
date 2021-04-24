@@ -21,17 +21,10 @@ def line_search(f, x, p, gx, c=0.5, t=0.5, max_alpha=1):
 
     """
     m = p @ gx
+    if m >= 0:
+        raise ValueError(f"no function decrease guaranteed in search direction p (p @ gx = {p @ gx})")
 
     fx = f(x)
-    test = 1e-10
-
-    #  this is a horrible hack to fix a bug in HEF line searches
-    #  ensures a decreasing search direction but should be unnecessary
-    a = f(x + test * p) < fx + c * test * m
-    b = f(x - test * p) < fx + c * test * m
-    if b and not a:
-        p *= -1
-
     alpha = max_alpha
     while f(x + alpha * p) > fx + c * alpha * m:
         alpha *= t
