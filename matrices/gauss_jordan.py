@@ -16,8 +16,8 @@ def gauss_jordan_elimination(aa, b):
     return aa[::-1, ::-1], b[::-1, :]
 
 
-def gaussian_elimination(aa, b, allow_pivot=True):
-    aug = np.hstack([aa, b])
+def gaussian_elimination(aa, b=None, allow_pivot=True):
+    aug = aa if b is None else np.hstack([aa, b])
     rank, _ = aa.shape
 
     def pivot():
@@ -36,9 +36,7 @@ def gaussian_elimination(aa, b, allow_pivot=True):
 
 
 def determinant(aa):
-    rank, _ = aa.shape
-    b = np.ones((rank, 1))
-    aa, b = gaussian_elimination(aa, b)
+    aa, _ = gaussian_elimination(aa)
     return np.diagonal(aa).prod()
 
 
