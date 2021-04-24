@@ -4,21 +4,17 @@ from numpy.linalg import norm
 from local_optimisation.bfgs import bfgs
 
 
-def rayleigh_ritz(d2f, x0, tol=1e-3):
-    d2f0 = d2f(x0)
-    evec0 = np.ones(d2f0.shape[0])
+def rayleigh_ritz(aa, tol=1e-3):
+    evec0 = np.ones(aa.shape[0])
 
     def f(evec):
-        xs = evec[:, np.newaxis]
-        return ((xs.T @ d2f0 @ xs) / (xs.T @ xs))[0, 0]
+        v = evec[:, np.newaxis]
+        return ((v.T @ aa @ v) / (v.T @ v))[0, 0]
 
     def df(evec):
-        xs = evec[:, np.newaxis]
-        left = (xs.T @ d2f0 @ xs)
-        leftp = d2f0 @ xs + d2f0.T @ xs
-        right = (xs.T @ xs)
-        rightp = 2 * xs
-        return ((leftp * right - left * rightp) / (right * right)).flatten()
+        v, v_t = evec[:, np.newaxis], evec[np.newaxis, :]
+        df0 = 2 * ((v.T @ v)*(aa @ v) - v @ (v.T @ aa @ v)) / (v.T @ v) ** 2
+        return df0.flatten()
 
     xmin = bfgs(f, evec0, df, tol)
     return f(xmin), xmin / norm(xmin)

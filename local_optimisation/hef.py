@@ -38,7 +38,8 @@ def hybrid_eigenvector_following(f, x0, df, d2f=None, tolg=1e-5, tolev=1e-6):
         return -f(x_)
 
     while modg > tolg:
-        eval_, evec = rayleigh_ritz(d2f, x0, tolev)
+        d2f0 = d2f(x0)
+        eval_, evec = rayleigh_ritz(d2f0, tolev)
         gx_ = -(dfx0 @ evec) * evec
 
         if norm(gx_) > tolg:
