@@ -1,9 +1,9 @@
 import numpy as np
 from numpy.linalg import norm
 
-from .line_search import line_search
 from matrices import rayleigh_ritz
 from .bfgs import bfgs_update_hessian
+from .line_search import line_search
 
 
 def get_hessian_approximator(df, h=1e-6):

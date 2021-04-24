@@ -13,7 +13,7 @@ def rayleigh_ritz(aa, tol=1e-3):
 
     def df(evec):
         v, v_t = evec[:, np.newaxis], evec[np.newaxis, :]
-        df0 = 2 * ((v.T @ v)*(aa @ v) - v @ (v.T @ aa @ v)) / (v.T @ v) ** 2
+        df0 = 2 * ((v.T @ v) * (aa @ v) - v @ (v.T @ aa @ v)) / (v.T @ v) ** 2
         return df0.flatten()
 
     xmin = bfgs(f, evec0, df, tol)

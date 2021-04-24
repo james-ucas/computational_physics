@@ -1,4 +1,5 @@
 import unittest
+
 import numpy as np
 
 from matrices import determinant, solve_system, matrix_inverse
