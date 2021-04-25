@@ -20,7 +20,7 @@ def line_search(f, x, p, gx, c=0.5, t=0.5, max_alpha=1):
     :rtype: float
 
     """
-    m = p @ gx
+    m = p.reshape(-1) @ gx.reshape(-1)
     if m >= 0:
         raise ValueError(f"no function decrease guaranteed in search direction p (p @ gx = {p @ gx})")
 

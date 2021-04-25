@@ -27,7 +27,7 @@ def bfgs_update_hessian(binv, y, s):
 
 
 def take_step(f, x0, df0, binv):
-    p = -binv @ df0
+    p = (-binv @ df0.reshape(-1)).reshape(x0.shape)
     alpha = line_search(f, x0, p, df0)
     return x0 + alpha * p
 
@@ -52,6 +52,6 @@ def bfgs(f, x0, df, xtol=1e-5, gtol=1e-5):
     b_inv = np.eye(x0.size)
 
     while any((norm((x1 := take_step(f, x0, df0, b_inv)) - x0) > xtol, norm(df1 := df(x1)) > gtol),):
-        b_inv = bfgs_update_hessian(b_inv, df1 - df0, x1 - x0)
+        b_inv = bfgs_update_hessian(b_inv, (df1 - df0).reshape(-1), (x1 - x0).reshape(-1))
         x0, df0 = x1, df1
     return x1
