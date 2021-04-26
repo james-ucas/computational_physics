@@ -51,7 +51,7 @@ def bfgs(f, x0, df, xtol=1e-5, gtol=1e-5):
     df0 = df(x0)
     b_inv = np.eye(x0.size)
 
-    while any((norm((x1 := take_step(f, x0, df0, b_inv)) - x0) > xtol, norm(df1 := df(x1)) > gtol),):
+    while any((norm((x1 := take_step(f, x0, df0, b_inv)) - x0) > xtol, norm(df1 := df(x1)) > gtol), ):
         b_inv = bfgs_update_hessian(b_inv, df1 - df0, x1 - x0)
         x0, df0 = x1, df1
     return x1

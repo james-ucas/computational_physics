@@ -3,8 +3,8 @@ import unittest
 
 import numpy as np
 
-from pair_potential import LJPotential
 from local_optimisation import bfgs
+from pair_potential import LJPotential
 
 
 class TestPairPotential(unittest.TestCase):

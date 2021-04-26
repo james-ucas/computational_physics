@@ -1,11 +1,13 @@
-import numpy as np
 import abc
+
+import numpy as np
 
 
 class PairPotential(abc.ABC):
     """
     Base class for pair potentials.
     """
+
     def __init__(self, particles, dimensions):
         self.particles = particles
         self.dimensions = dimensions
@@ -43,6 +45,7 @@ class LJPotential(PairPotential):
     """
     Lennard-Jones pair potential
     """
+
     def pair_potential(self, r, sigma=1.0, epsilon=1.0):
         r6 = (sigma / r) ** 6
         return 4 * epsilon * r6 * (r6 - 1)
