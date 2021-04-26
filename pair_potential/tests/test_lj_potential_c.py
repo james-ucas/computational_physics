@@ -9,7 +9,7 @@ from pair_potential import lj_energy_c, lj_gradient_c
 class TestLJPotentialC(unittest.TestCase):
     def setUp(self):
         current_dir = os.path.dirname(__file__)
-        self.pos = np.loadtxt(f'{current_dir}/_lj13.txt')
+        self.pos = np.loadtxt(f'{current_dir}/_lj13.txt').flatten()
         self.energy = -44.32680141
 
     def test_lj_energy_c(self):
